@@ -1,0 +1,227 @@
+
+;-------------------------------------------------------------------------
+; vmx_svga.inf
+;
+; Copyright (c) 1993-1999, Microsoft Corporation
+; Copyright 1999-2014 VMware, Inc.  All rights reserved.
+;-------------------------------------------------------------------------
+[Version]
+Signature   = "$WINDOWS NT$"
+Provider    = %CompanyName%
+ClassGUID   = {4D36E968-E325-11CE-BFC1-08002BE10318}
+Class       = Display
+DriverVer   = 11/17/2014, 12.01.08.0000
+CatalogFile = vmx_svga.cat
+
+[SourceDisksNames]
+1 = %DiskID%
+
+[SourceDisksFiles]
+vmx_svga.sys = 1
+vmx_fb.dll = 1
+vmwogl32.dll = 1
+vmx_mode.dll = 1
+
+
+
+
+[DestinationDirs]
+DefaultDestDir = 11
+vmx_svga.Miniport = 12
+vmx_svga.Display = 11
+vmx_svga.OpenGL = 11
+vmx_svga.OpenGL64 = 11
+vmx_svga.OpenGLWow64 = 10,SysWOW64
+vmx_svga.ModeChange = 11
+
+[Manufacturer]
+%CompanyName% = VMware, NTx86, NTamd64, NTx86.6.0, NTamd64.6.0, NTx86.6.1, NTamd64.6.1, NTia64
+
+[VMware]
+
+%SVGA% = vmx_svga, PCI\VEN_15AD&DEV_0405&SUBSYS_040515AD&REV_00
+%SVGA% = vmx_svga, PCI\VEN_15AD&DEV_0405&SUBSYS_00000000&REV_00
+%SVGA% = vmx_svga, PCI\VEN_15AD&DEV_0710&SUBSYS_00000000&REV_00
+
+
+; Windows XP x86 and later
+[VMware.NTx86]
+
+%SVGA% = vmx_svga, PCI\VEN_15AD&DEV_0405&SUBSYS_040515AD&REV_00
+%SVGA% = vmx_svga, PCI\VEN_15AD&DEV_0405&SUBSYS_00000000&REV_00
+%SVGA% = vmx_svga, PCI\VEN_15AD&DEV_0710&SUBSYS_00000000&REV_00
+
+
+; Windows XP x64 and later
+[VMware.NTamd64]
+
+
+
+
+
+
+; Windows Vista x86 and later
+[VMware.NTx86.6.0]
+
+%SVGA% = vmx_svga_vista, PCI\VEN_15AD&DEV_0405&SUBSYS_040515AD&REV_00
+%SVGA% = vmx_svga_vista, PCI\VEN_15AD&DEV_0405&SUBSYS_00000000&REV_00
+%SVGA% = vmx_svga_vista, PCI\VEN_15AD&DEV_0710&SUBSYS_00000000&REV_00
+
+
+; Windows Vista x64 and later
+[VMware.NTamd64.6.0]
+
+
+
+
+
+
+; Windows 7 x86 and later (unsupported)
+[VMware.NTx86.6.1]
+
+; Windows 7 x64 and later (unsupported)
+[VMware.NTamd64.6.1]
+
+; Itanium (unsupported)
+[VMware.NTia64]
+
+[ControlFlags]
+ExcludeFromSelect = *
+
+[vmx_svga]
+CopyFiles = vmx_svga.Miniport, vmx_svga.Display, vmx_svga.OpenGL
+
+[vmx_svga_nt64]
+CopyFiles = vmx_svga.Miniport, vmx_svga.Display, vmx_svga.OpenGL64, vmx_svga.OpenGLWow64
+
+[vmx_svga_vista]
+CopyFiles = vmx_svga.Miniport, vmx_svga.Display, vmx_svga.OpenGL
+FeatureScore = FC
+
+[vmx_svga_vista64]
+CopyFiles = vmx_svga.Miniport, vmx_svga.Display, vmx_svga.OpenGL64, vmx_svga.OpenGLWow64
+FeatureScore = FC
+
+[vmx_svga.Miniport]
+vmx_svga.sys
+
+[vmx_svga.Display]
+vmx_fb.dll
+
+[vmx_svga.OpenGL]
+vmwogl32.dll
+
+[vmx_svga.OpenGL64]
+vmwogl64.dll
+
+[vmx_svga.OpenGLWow64]
+vmwogl32.dll
+
+[vmx_svga.ModeChange]
+vmx_mode.dll
+
+[vmx_svga.Services]
+AddService = vmx_svga, 0x00000002, vmx_svga_Service_Inst, vmx_svga_EventLog_Inst
+
+[vmx_svga_nt64.Services]
+AddService = vmx_svga, 0x00000002, vmx_svga_Service_Inst, vmx_svga_EventLog_Inst
+
+[vmx_svga_vista.Services]
+AddService = vmx_svga, 0x00000002, vmx_svga_Service_Inst_vista, vmx_svga_EventLog_Inst
+
+[vmx_svga_vista64.Services]
+AddService = vmx_svga, 0x00000002, vmx_svga_Service_Inst_vista, vmx_svga_EventLog_Inst
+
+[vmx_svga_Service_Inst]
+ServiceType = 1
+StartType = 1
+ErrorControl = 0
+LoadOrderGroup = Video
+ServiceBinary = %12%\vmx_svga.sys
+
+[vmx_svga_Service_Inst_vista]
+ServiceType = 1
+StartType = 3
+ErrorControl = 0
+LoadOrderGroup = Video
+ServiceBinary = %12%\vmx_svga.sys
+
+[vmx_svga_EventLog_Inst]
+AddReg = vmx_svga_EventLog_AddReg
+
+[vmx_svga_EventLog_AddReg]
+HKR, , EventMessageFile, 0x00020000, "%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\vmx_svga.sys"
+HKR, , TypesSupported, 0x00010001, 7
+
+[vmx_svga.SoftwareSettings]
+AddReg = vmx_svga_SoftwareDeviceSettings
+AddReg = vmx_svga_ICDSoftwareSettings
+
+[vmx_svga_nt64.SoftwareSettings]
+AddReg = vmx_svga_SoftwareDeviceSettings
+AddReg = vmx_svga_ICDSoftwareSettings64
+
+[vmx_svga_vista.SoftwareSettings]
+AddReg = vmx_svga_SoftwareDeviceSettings
+AddReg = vmx_svga_ICDSoftwareSettings
+
+[vmx_svga_vista64.SoftwareSettings]
+AddReg = vmx_svga_SoftwareDeviceSettings
+AddReg = vmx_svga_ICDSoftwareSettings64
+
+[vmx_svga_SoftwareDeviceSettings]
+HKR, , InstalledDisplayDrivers, %REG_MULTI_SZ%, vmx_fb
+HKR, , VgaCompatible, %REG_DWORD%, 0
+HKR, , Acceleration.Level, %REG_DWORD%, 0
+HKR, , DefaultSettings.XResolution, %REG_DWORD%, 640
+HKR, , DefaultSettings.YResolution, %REG_DWORD%, 480
+HKR, , DefaultSettings.BitsPerPel, %REG_DWORD%, 32
+
+[vmx_svga_ICDSoftwareSettings]
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Dll, %REG_SZ%, vmwogl32
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Version, %REG_DWORD%, 2
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", DriverVersion, %REG_DWORD%, 1
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Flags, %REG_DWORD%, 0x00000003
+
+[vmx_svga_ICDSoftwareSettings64]
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Dll, %REG_SZ%, vmwogl64
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Version, %REG_DWORD%, 2
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", DriverVersion, %REG_DWORD%, 1
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Flags, %REG_DWORD%, 0x00000003
+HKLM, "SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Dll, %REG_SZ%, vmwogl32
+HKLM, "SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Version, %REG_DWORD%, 2
+HKLM, "SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", DriverVersion, %REG_DWORD%, 1
+HKLM, "SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\OpenGLDrivers\vmx_fb", Flags, %REG_DWORD%, 0x00000003
+
+[vmx_svga.CoInstallers]
+CopyFiles = vmx_svga.ModeChange
+AddReg = vmx_svga_CoInstallers_AddReg
+
+[vmx_svga_nt64.CoInstallers]
+CopyFiles = vmx_svga.ModeChange
+AddReg = vmx_svga_CoInstallers_AddReg
+
+[vmx_svga_vista.CoInstallers]
+CopyFiles = vmx_svga.ModeChange
+AddReg = vmx_svga_CoInstallers_AddReg
+
+[vmx_svga_vista64.CoInstallers]
+CopyFiles = vmx_svga.ModeChange
+AddReg = vmx_svga_CoInstallers_AddReg
+
+[vmx_svga_CoInstallers_AddReg]
+HKR, , CoInstallers32, 0x00010000, "vmx_mode.dll, VMX_ModeChange"
+
+[VMwarePathInfo]
+OriginalInfSourcePath = %1%
+
+[Strings]
+REG_SZ        = 0x00000000
+REG_MULTI_SZ  = 0x00010000
+REG_EXPAND_SZ = 0x00020000
+REG_BINARY    = 0x00000001
+REG_DWORD     = 0x00010001
+
+DiskID = "VMware Tools"
+CompanyName = "VMware, Inc."
+SVGA = "VMware SVGA II"

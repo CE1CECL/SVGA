@@ -1,0 +1,105 @@
+[Version]
+Signature = "$WINDOWS 95$"
+Provider = %Mfg%
+ClassGUID = {4D36E968-E325-11CE-BFC1-08002BE10318}
+Class = Display
+DriverVer = 11/28/2001, 10.7.0.0
+
+[SourceDisksNames]
+1 = %DiskID%, , 0
+
+[SourceDisksFiles]
+vmx_svga.drv = 1
+vmx_svga.vxd = 1
+
+[DestinationDirs]
+DefaultDestDir = 1
+vmx_svga.Copy = 11
+
+[Manufacturer]
+%Mfg% = Mfg
+
+[Mfg]
+%SVGA% = vmx_svga.Install, PCI\VEN_15AD&DEV_0405&SUBSYS_040515AD&REV_00
+%SVGA% = vmx_svga.Install, PCI\VEN_15AD&DEV_0405&SUBSYS_00000000&REV_00
+%SVGA% = vmx_svga.Install, PCI\VEN_15AD&DEV_0710&SUBSYS_00000000&REV_00
+
+[vmx_svga.Install]
+DelReg = vmx_svga.DelReg
+CopyFiles = vmx_svga.Copy
+AddReg = vmx_svga.AddReg
+
+[vmx_svga.DelReg]
+HKR, , Ver
+HKR, , DevLoader
+HKR, DEFAULT
+HKR, MODES
+HKR, CURRENT
+
+[vmx_svga.Copy]
+vmx_svga.drv
+vmx_svga.vxd
+
+[vmx_svga.AddReg]
+HKR, , Ver, , 10.7
+HKR, , DevLoader, , *vdd
+HKR, , NoForcedD3, 1, 01, 00, 00, 00
+HKR, DEFAULT, Mode, , "16,640,480"
+HKR, DEFAULT, drv, , vmx_svga.drv
+HKR, DEFAULT, vdd, , "*vdd"
+HKR, DEFAULT, minivdd, , vmx_svga.vxd
+HKR, DEFAULT, carddvdd, , cardsamp.vxd
+HKR, DEFAULT, RefreshRate, , -1
+HKR, DEFAULT, DDC, , 1
+HKR, DEFAULT, ExtModeSwitch, , 0
+HKR, "MODES\4\640,480", drv, , vga.drv
+HKR, "MODES\4\640,480", vdd, , *vdd
+HKR, "MODES\8\640,480"
+HKR, "MODES\8\800,600"
+HKR, "MODES\8\1024,768"
+HKR, "MODES\8\1152,864"
+HKR, "MODES\8\1280,960"
+HKR, "MODES\8\1280,1024"
+HKR, "MODES\8\1400,1050"
+HKR, "MODES\8\1600,1200"
+HKR, "MODES\8\1792,1344"
+HKR, "MODES\8\1856,1392"
+HKR, "MODES\8\1920,1440"
+HKR, "MODES\16\640,480"
+HKR, "MODES\16\800,600"
+HKR, "MODES\16\1024,768"
+HKR, "MODES\16\1152,864"
+HKR, "MODES\16\1280,960"
+HKR, "MODES\16\1280,1024"
+HKR, "MODES\16\1400,1050"
+HKR, "MODES\16\1600,1200"
+HKR, "MODES\16\1792,1344"
+HKR, "MODES\16\1856,1392"
+HKR, "MODES\16\1920,1440"
+HKR, "MODES\24\640,480"
+HKR, "MODES\24\800,600"
+HKR, "MODES\24\1024,768"
+HKR, "MODES\24\1152,864"
+HKR, "MODES\24\1280,960"
+HKR, "MODES\24\1280,1024"
+HKR, "MODES\24\1400,1050"
+HKR, "MODES\24\1600,1200"
+HKR, "MODES\24\1792,1344"
+HKR, "MODES\24\1856,1392"
+HKR, "MODES\24\1920,1440"
+HKR, "MODES\32\640,480"
+HKR, "MODES\32\800,600"
+HKR, "MODES\32\1024,768"
+HKR, "MODES\32\1152,864"
+HKR, "MODES\32\1280,960"
+HKR, "MODES\32\1280,1024"
+HKR, "MODES\32\1400,1050"
+HKR, "MODES\32\1600,1200"
+HKR, "MODES\32\1792,1344"
+HKR, "MODES\32\1856,1392"
+HKR, "MODES\32\1920,1440"
+
+[Strings]
+DiskID = "VMware Tools"
+Mfg = "VMware, Inc."
+SVGA = "VMware SVGA II"
